@@ -1,0 +1,498 @@
+/* Main styles for the Movie Voting App */
+
+:root {
+    --primary-color: #3B82F6;
+    --primary-dark: #2563EB;
+    --secondary-color: #10B981;
+    --accent-color: #F59E0B;
+    --danger-color: #EF4444;
+    --light-gray: #F3F4F6;
+    --dark-gray: #374151;
+    --white: #FFFFFF;
+    --black: #111827;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.5;
+    color: var(--dark-gray);
+    background-color: var(--light-gray);
+}
+
+/* Mobile-first approach */
+.container {
+    width: 100%;
+    max-width: 100%;
+    padding: 1rem;
+    margin: 0 auto;
+}
+
+/* Login screen */
+#login-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+}
+
+.login-container {
+    background-color: var(--white);
+    border-radius: 1rem;
+    padding: 2rem;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.login-heading {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    font-size: 1.875rem;
+    font-weight: 700;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+.input-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.text-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.text-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.select-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    background-color: var(--white);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+}
+
+.button {
+    display: inline-block;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.button-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.button-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+.button-secondary {
+    background-color: var(--secondary-color);
+    color: var(--white);
+}
+
+.button-secondary:hover {
+    background-color: #0DA271;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: #6B7280;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.separator::before {
+    margin-right: 1rem;
+}
+
+.separator::after {
+    margin-left: 1rem;
+}
+
+/* Game screen */
+#game-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.game-header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.movie-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.movie-card {
+    background-color: var(--white);
+    border-radius: 1rem;
+    overflow: hidden;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.movie-poster {
+    width: 100%;
+    background-color: var(--black);
+    display: flex;
+    justify-content: center;
+}
+
+.movie-poster img {
+    max-height: 500px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.movie-details {
+    padding: 1.5rem;
+}
+
+.movie-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.movie-description {
+    color: #6B7280;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+}
+
+.movie-rating {
+    display: flex;
+    align-items: center;
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+.voting-controls {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem;
+    background-color: var(--white);
+    border-top: 1px solid #E5E7EB;
+}
+
+.vote-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.vote-button:hover:not(:disabled) {
+    transform: scale(1.1);
+}
+
+.vote-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.vote-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.vote-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.upvote {
+    color: var(--secondary-color);
+}
+
+.downvote {
+    color: var(--danger-color);
+}
+
+.pass {
+    color: var(--dark-gray);
+}
+
+/* Results screen */
+#results-screen {
+    padding: 1rem;
+    background-color: var(--light-gray);
+    min-height: 100vh;
+}
+
+.results-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.results-heading {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--dark-gray);
+    font-size: 1.875rem;
+    font-weight: 700;
+}
+
+.movie-result {
+    background-color: var(--white);
+    border-radius: 1rem;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.result-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+}
+
+.result-rank {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: 50%;
+}
+
+.result-poster {
+    width: 4rem;
+    height: 6rem;
+    object-fit: cover;
+    border-radius: 0.25rem;
+}
+
+.result-info {
+    margin-left: 1rem;
+    flex: 1;
+}
+
+.result-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.result-votes {
+    display: flex;
+    gap: 1rem;
+}
+
+.vote-count {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+}
+
+.result-score {
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.positive-score {
+    color: var(--secondary-color);
+}
+
+.negative-score {
+    color: var(--danger-color);
+}
+
+.player-votes {
+    padding: 1rem;
+    border-top: 1px solid #E5E7EB;
+}
+
+.player-vote {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.player-vote-up {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--secondary-color);
+}
+
+.player-vote-down {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+}
+
+.player-vote-pass {
+    background-color: rgba(107, 114, 128, 0.1);
+    color: var(--dark-gray);
+}
+
+.play-again-button {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 2rem auto;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.play-again-button:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-reveal {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Utilities */
+.hidden {
+    display: none !important;
+}
+
+/* Badge for players */
+.player-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.host-badge::after {
+    content: '👑';
+    margin-left: 0.25rem;
+}
+
+.voted-badge::after {
+    content: '✓';
+    margin-left: 0.25rem;
+    color: var(--secondary-color);
+}
+
+/* Responsive design */
+@media (min-width: 640px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    .movie-card {
+        max-width: 600px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: 2rem;
+    }
+
+    .login-container {
+        padding: 2.5rem;
+    }
+
+    .movie-title {
+        font-size: 1.75rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1024px;
+    }
+
+    .results-container {
+        max-width: 800px;
+    }
+
+    .voting-controls {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+}

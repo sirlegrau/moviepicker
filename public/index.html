@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Voting App</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .animate-reveal {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 h-screen">
+<div id="app" class="h-full">
+    <!-- Login/Join Screen -->
+    <div id="login-screen" class="flex flex-col h-full items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <h1 class="text-2xl font-bold mb-6 text-center">📽️ MOVIE PICKERS 🎬</h1>
+
+            <div class="mb-4">
+                <label for="player-name" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                <input type="text" id="player-name" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Enter your name">
+            </div>
+
+            <!-- Added Movie Topic Selection -->
+            <div class="mb-4">
+                <label for="movie-topic" class="block text-sm font-medium text-gray-700 mb-1">🍿Select a Topic🍿</label>
+                <select id="movie-topic" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                    <option value="popular">Popular Movies</option>
+                    <option value="topRated">Top Rated</option>
+                    <option value="nowPlaying">Now Playing</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="animation">Animation</option>
+                    <option value="action">Action</option>
+                    <option value="comedy">Comedy</option>
+                    <option value="horror">Horror</option>
+                    <option value="sciFi">Sci-Fi</option>
+                    <option value="romance">Romance</option>
+                    <option value="documentary">Documentary</option>
+                    <option value="classic">Classics</option>
+                    <option value="90s">90s Movies</option>
+                    <option value="80s">80s Movies</option>
+                </select>
+            </div>
+
+            <div class="space-y-4">
+                <button id="create-lobby" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">Create New Lobby</button>
+
+                <div class="flex items-center">
+                    <div class="flex-1 border-t border-gray-300"></div>
+                    <span class="px-2 text-gray-500 text-sm">OR</span>
+                    <div class="flex-1 border-t border-gray-300"></div>
+                </div>
+
+                <div class="flex space-x-2">
+                    <input type="text" id="lobby-id" class="flex-1 px-3 py-2 border border-gray-300 rounded-md uppercase" placeholder="Enter Lobby Code">
+                    <button id="join-lobby" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">Join</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen (Initially Hidden) -->
+    <div id="game-screen" class="hidden h-full flex flex-col">
+        <!-- Content will be dynamically generated -->
+    </div>
+
+    <!-- Results Screen (Initially Hidden) -->
+    <div id="results-screen" class="hidden h-full">
+        <!-- Content will be dynamically generated -->
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
