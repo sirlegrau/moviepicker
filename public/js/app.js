@@ -192,6 +192,7 @@ function renderMovieVoting(movie) {
             <h2 class="text-xl font-bold mb-2 text-center">${movie.title} ${movie.releaseYear ? `(${movie.releaseYear})` : ''}</h2>
   
             ${movie.rating ? `<div class="mt-2 flex justify-center items-center text-lg"><span class="text-yellow-500">★</span> <span class="ml-1">${movie.rating}/10</span></div>` : ''}
+            ${movie.duration ? `<div class="mt-2 flex justify-center items-center text-lg"><span class="text-yellow-500">⌛</span> <span class="ml-1">${movie.duration}m</span></div>` : ''}
             
             <div class="mt-4 flex justify-center gap-6 w-full absolute bottom-8">
                 <button 
