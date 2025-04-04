@@ -214,11 +214,12 @@ function renderMovieVoting(movie) {
             </div>
         </div>
         <div class="w-1/2 max-w-md bg-white rounded-lg shadow-lg overflow-hidden flex flex-col items-center">
-            <div class="relative flex justify-center bg-gray-900 w-full h-[60vh]">
+            <div class="relative flex justify-center" style="height: 95vh;">
                 <img 
                     src="${movie.imageUrl}" 
                     alt="${movie.title}"
-                    class="h-full w-auto object-contain"
+                    style="max-height: 95vh; max-width: 100%;"
+                    class="object-contain"
                 />
             </div>
         </div>
