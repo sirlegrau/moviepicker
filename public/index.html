@@ -11,12 +11,10 @@
         .animate-reveal {
             animation: fadeIn 0.5s ease-in-out;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .hidden {
             display: none;
         }
@@ -38,26 +36,26 @@
             <div class="mb-4">
                 <label for="movie-topic" class="block text-sm font-medium text-gray-700 mb-1">🍿Select a Topic🍿</label>
                 <select id="movie-topic" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-
+                    <option value="custom">🎞️ Custom Movies 🎞️</option>
                     <option value="popular">Popular Movies</option>
                     <option value="caudalesmaricon">🥸caudales maricon🥸</option>
                     <option value="topRated">Top Rated</option>
-                    <option value="nowPlaying">Now Playing</option>
-                    <option value="upcoming">Upcoming</option>
                     <option value="animation">Animation</option>
-                    <option value="action">Action</option>
                     <option value="comedy">Comedy</option>
                     <option value="horror">Horror</option>
                     <option value="sciFi">Sci-Fi</option>
                     <option value="romance">Romance</option>
-                    <option value="documentary">Documentary</option>
-                    <option value="classic">Classics</option>
-                    <option value="90s">90s Movies</option>
-                    <option value="80s">80s Movies</option>
                     <option value="GRANOTISMO">🐸GRANOSTISMO🐸</option>
                 </select>
             </div>
-
+            <div id="custom-movies-container" class="mb-4">
+                <label for="custom-movies" class="block text-sm font-medium text-gray-700 mb-1">Enter Movie Titles (one per line)</label>
+                <div class="line-numbers-container">
+                    <div id="line-numbers" class="line-numbers"></div>
+                    <textarea id="custom-movies" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md numbered-textarea" placeholder="Pulp Fiction"></textarea>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Enter at least 5 movie titles, one per line</p>
+            </div>
             <div class="space-y-4">
                 <button id="create-lobby" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">Create New Lobby</button>
 
@@ -86,8 +84,8 @@
     </div>
 </div>
 
+<!-- Add this to the head section of your HTML file -->
 <script src="/socket.io/socket.io.js"></script>
-
-<script src="/js/app.js"></script>
+<script type="module" src="./js/index.js"></script>
 </body>
 </html>

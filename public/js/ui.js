@@ -1,104 +1,37 @@
-
-const socket =io({
-    pingTimeout: 60000,
-});
-
-// DOM elements
-
-const loginScreen = document.getElementById('login-screen');
-const gameScreen = document.getElementById('game-screen');
-const resultsScreen = document.getElementById('results-screen');
-const playerNameInput = document.getElementById('player-name');
-const createLobbyBtn = document.getElementById('create-lobby');
-const lobbyIdInput = document.getElementById('lobby-id');
-const joinLobbyBtn = document.getElementById('join-lobby');
-const topicSelect = document.getElementById('movie-topic'); // New element for topic selection
-
-// App state
-const state = {
-    lobbyId: null,
-    playerId: null,
-    playerName: '',
-    currentMovie: null,
-    votesRemaining: { upvotes: 3, downvotes: 3 },
-    players: [],
-    movieNumber: 0,
-    totalMovies: 0,
-    results: null,
-    topic: 'popular', // Default topic
-    hasVotedForCurrentMovie: false
-};
-
-// Create a new lobby
-createLobbyBtn.addEventListener('click', () => {
-    const playerName = playerNameInput.value.trim();
-    if (!playerName) {
-        alert('Please enter your name');
-        return;
-    }
-
-    state.playerName = playerName;
-    state.topic = topicSelect ? topicSelect.value : 'popular';
-    socket.emit('lobby:create', { playerName, topic: state.topic }, (response) => {
-        if (response.success) {
-            state.lobbyId = response.lobbyId;
-            state.playerId = response.playerId;
-            state.hostId = response.playerId; // Track that this player is the host
-
-            showGameScreen();
-            updateLobbyInfo();
-        } else {
-            alert('Error creating lobby: ' + response.error);
-        }
-    });
-});
-
-// Join an existing lobby
-joinLobbyBtn.addEventListener('click', () => {
-    const playerName = playerNameInput.value.trim();
-    const lobbyId = lobbyIdInput.value.trim();
-
-    if (!playerName) {
-        alert('Please enter your name');
-        return;
-    }
-
-    if (!lobbyId) {
-        alert('Please enter a lobby code');
-        return;
-    }
-
-    state.playerName = playerName;
-
-    socket.emit('lobby:join', { lobbyId, playerName }, (response) => {
-        if (response.success) {
-            state.lobbyId = response.lobbyId;
-            state.playerId = response.playerId;
-            state.topic = response.topic; // Get the topic from the existing lobby
-
-            showGameScreen();
-            updateLobbyInfo();
-        } else {
-            alert('Error joining lobby: ' + response.error);
-        }
-    });
-});
+import { state, vote, startGame, playagainF } from './index.js';
 
 // Show game screen and hide others
-function showGameScreen() {
-    loginScreen.classList.add('hidden');
-    resultsScreen.classList.add('hidden');
-    gameScreen.classList.remove('hidden');
+export function showGameScreen() {
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('results-screen').classList.add('hidden');
+    document.getElementById('game-screen').classList.remove('hidden');
 }
 
 // Show results screen and hide others
-function showResultsScreen() {
-    loginScreen.classList.add('hidden');
-    gameScreen.classList.add('hidden');
-    resultsScreen.classList.remove('hidden');
+export function showResultsScreen() {
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('game-screen').classList.add('hidden');
+    document.getElementById('results-screen').classList.remove('hidden');
 }
 
-function updateLobbyInfo() {
+// Helper function to render player list
+export function renderPlayerList() {
+    if (!state.players || state.players.length === 0) {
+        return '<div class="text-gray-500 italic">No players yet</div>';
+    }
+
+    return state.players.map(player => `
+        <div class="flex items-center bg-white border border-blue-200 rounded-full px-3 py-1">
+            ${player.name}
+            ${player.isHost ? '<span class="ml-1 text-yellow-500">👑</span>' : ''}
+        </div>
+    `).join('');
+}
+
+// Update lobby information display
+export function updateLobbyInfo() {
+    const gameScreen = document.getElementById('game-screen');
+
     // Clear previous content first
     const existingInfo = gameScreen.querySelector('.bg-blue-100');
     if (existingInfo) existingInfo.remove();
@@ -145,30 +78,11 @@ function updateLobbyInfo() {
         startButton.addEventListener('click', startGame);
     }
 }
-// Helper function to render player list
-function renderPlayerList() {
-    if (!state.players || state.players.length === 0) {
-        return '<div class="text-gray-500 italic">No players yet</div>';
-    }
 
-    return state.players.map(player => `
-        <div class="flex items-center bg-white border border-blue-200 rounded-full px-3 py-1">
-            ${player.name}
-            ${player.isHost ? '<span class="ml-1 text-yellow-500">👑</span>' : ''}
-        </div>
-    `).join('');
-}
-// Function to start the game
-function startGame() {
-    const lobbyInfo = gameScreen.querySelector('.tamare');
-    if (lobbyInfo) {
-        lobbyInfo.remove();
-    }
-    socket.emit('round:ready');
-    document.getElementById('start-game-btn').disabled = true;
-    document.getElementById('start-game-btn').textContent = 'Game starting...';
-}
-function renderMovieVoting(movie) {
+// Render movie voting screen
+export function renderMovieVoting(movie) {
+    const gameScreen = document.getElementById('game-screen');
+
     state.currentMovie = movie;
     state.hasVotedForCurrentMovie = false;
 
@@ -247,34 +161,11 @@ function renderMovieVoting(movie) {
         }
     });
 }
-// Modify the vote function to disable buttons after voting
-function vote(voteType) {
-    // Set the flag to true to prevent further votes
-    state.hasVotedForCurrentMovie = true;
-
-    // Disable all vote buttons
-    const upVoteBtn = document.getElementById('vote-up');
-    const downVoteBtn = document.getElementById('vote-down');
-    const passBtn = document.getElementById('vote-pass');
-
-    if (upVoteBtn) upVoteBtn.disabled = true;
-    if (downVoteBtn) downVoteBtn.disabled = true;
-    if (passBtn) passBtn.disabled = true;
-
-    // Add a visual indicator that buttons are disabled
-    if (upVoteBtn) upVoteBtn.classList.replace('text-green-600', 'text-gray-400');
-    if (downVoteBtn) downVoteBtn.classList.replace('text-red-600', 'text-gray-400');
-    if (passBtn) passBtn.classList.replace('text-gray-600', 'text-gray-400');
-
-    // Send the vote to the server
-    socket.emit('vote:cast', {
-        movieId: state.currentMovie.id,
-        voteType: voteType
-    });
-}
 
 // Render results screen
-function renderResults(resultsData) {
+export function renderResults(resultsData) {
+    const resultsScreen = document.getElementById('results-screen');
+
     state.results = resultsData;
 
     // Switch to results screen
@@ -382,74 +273,4 @@ function renderResults(resultsData) {
     if (playagain) {
         playagain.addEventListener('click', playagainF);
     }
-
-    function playagainF() {
-        location.reload()
-    }
 }
-
-
-// Socket.IO event listeners
-socket.on('movie:new', (data) => {
-    state.movieNumber = data.movieNumber;
-    state.totalMovies = data.totalMovies;
-    renderMovieVoting(data.movie);
-});
-socket.on('players:status', (players) => {
-    state.players = players;
-    const host = players.find(player => player.isHost);
-    if (host) {
-        state.hostId = host.id;
-    }
-
-    // Update the lobby player list if it exists
-    const lobbyPlayerList = document.getElementById('lobby-player-list');
-    if (lobbyPlayerList) {
-        lobbyPlayerList.innerHTML = renderPlayerList();
-    }
-
-    // Update player list in voting screen if it exists
-    const playerList = document.getElementById('player-list');
-    if (playerList) {
-        playerList.innerHTML = state.players.map(player => `
-            <div class="flex items-center bg-blue-700 rounded-full px-3 py-1">
-                ${player.name}
-                ${player.hasVoted
-            ? '<span class="ml-1 text-green-300">✓</span>'
-            : '<span class="ml-1 text-yellow-300">⋯</span>'
-        }
-                ${player.isHost ? '<span class="ml-1 text-yellow-300">👑</span>' : ''}
-            </div>
-        `).join('');
-    }
-});
-
-socket.on('votes:remaining', (votes) => {
-    state.votesRemaining = votes;
-
-    // Update vote buttons if they exist
-    const upVoteBtn = document.getElementById('vote-up');
-    const downVoteBtn = document.getElementById('vote-down');
-
-    if (upVoteBtn) {
-        upVoteBtn.className = `flex flex-col items-center ${state.votesRemaining.upvotes > 0 ? 'text-green-600' : 'text-gray-400'}`;
-        upVoteBtn.disabled = state.votesRemaining.upvotes === 0;
-        upVoteBtn.querySelector('div:last-child').textContent = `${state.votesRemaining.upvotes} left`;
-    }
-
-    if (downVoteBtn) {
-        downVoteBtn.className = `flex flex-col items-center ${state.votesRemaining.downvotes > 0 ? 'text-red-600' : 'text-gray-400'}`;
-        downVoteBtn.disabled = state.votesRemaining.downvotes === 0;
-        downVoteBtn.querySelector('div:last-child').textContent = `${state.votesRemaining.downvotes} left`;
-    }
-});
-
-socket.on('round:complete', (data) => {
-    renderResults(data);
-});
-
-// Handle socket connection errors
-socket.on('connect_error', (error) => {
-    console.error('Connection error:', error);
-    alert('Failed to connect to server. Please try again.');
-});

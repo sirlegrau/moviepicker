@@ -101,109 +101,6 @@ async function fetchMoviesByTopic(topic = 'popular', count = 10) {
         return getFallbackMovies(count);
     }
 }
-
-/**
- * Fetch movies by a specific year range
- * @param {number} startYear - Starting year
- * @param {number} endYear - Ending year
- * @param {number} count - Number of movies to fetch
- * @returns {Promise<Array>} - Array of formatted movie objects
- */
-async function fetchMoviesByYearRange(startYear, endYear, count = 10) {
-    const cacheKey = `years_${startYear}_${endYear}_${count}`;
-    if (movieCache[cacheKey]) {
-        return movieCache[cacheKey];
-    }
-
-    try {
-        const response = await axios.get(`${BASE_URL}/discover/movie`, {
-            params: {
-                api_key: API_KEY,
-                language: 'en-US',
-                sort_by: 'popularity.desc',
-                'primary_release_date.gte': `${startYear}-01-01`,
-                'primary_release_date.lte': `${endYear}-12-31`,
-                page: 1
-            }
-        });
-
-        // Extract basic movie data
-        const moviesBasic = response.data.results.slice(0, count);
-
-        // Fetch runtime for each movie
-        const moviesWithDetails = await Promise.all(
-            moviesBasic.map(async (movie, index) => {
-                const details = await fetchMovieDetails(movie.id);
-                return {
-                    id: `m${index + 1}`,
-                    tmdbId: movie.id,
-                    title: movie.title,
-                    imageUrl: movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : '/images/placeholder.jpg',
-                    description: movie.overview,
-                    releaseYear: movie.release_date ? movie.release_date.split('-')[0] : '',
-                    rating: movie.vote_average,
-                    duration: details.runtime || 0  // Add duration (runtime) field
-                };
-            })
-        );
-
-        movieCache[cacheKey] = moviesWithDetails;
-        return moviesWithDetails;
-    } catch (error) {
-        console.error('Error fetching movies by year range:', error.message);
-        return getFallbackMovies(count);
-    }
-}
-
-/**
- * Search for movies by query
- * @param {string} query - Search query
- * @param {number} count - Number of movies to fetch
- * @returns {Promise<Array>} - Array of formatted movie objects
- */
-async function searchMovies(query, count = 10) {
-    const cacheKey = `search_${query}_${count}`;
-    if (movieCache[cacheKey]) {
-        return movieCache[cacheKey];
-    }
-
-    try {
-        const response = await axios.get(`${BASE_URL}/search/movie`, {
-            params: {
-                api_key: API_KEY,
-                language: 'en-US',
-                query: query,
-                page: 1
-            }
-        });
-
-        // Extract basic movie data
-        const moviesBasic = response.data.results.slice(0, count);
-
-        // Fetch runtime for each movie
-        const moviesWithDetails = await Promise.all(
-            moviesBasic.map(async (movie, index) => {
-                const details = await fetchMovieDetails(movie.id);
-                return {
-                    id: `m${index + 1}`,
-                    tmdbId: movie.id,
-                    title: movie.title,
-                    imageUrl: movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : '/images/placeholder.jpg',
-                    description: movie.overview,
-                    releaseYear: movie.release_date ? movie.release_date.split('-')[0] : '',
-                    rating: movie.vote_average,
-                    duration: details.runtime || 0  // Add duration (runtime) field
-                };
-            })
-        );
-
-        movieCache[cacheKey] = moviesWithDetails;
-        return moviesWithDetails;
-    } catch (error) {
-        console.error('Error searching movies:', error.message);
-        return getFallbackMovies(count);
-    }
-}
 /**
  * Get fallback movies in case the API fails
  * @param {number} count - Number of movies to return
@@ -295,7 +192,6 @@ function getcaudalesmaricon(count = 11) {
         { id: 'm10', title: 'The Core', imageUrl: 'https://image.tmdb.org/t/p/w1280/iMPR3OFhKNVvJw4eZoRhf9RzfHJ.jpg', releaseYear: '2003', rating: 5.8, duration: 136 },
         { id: 'm11', title: 'The Life List', imageUrl: 'https://image.tmdb.org/t/p/w1280/5fg98cVo7da7OIK45csdLSd4NaU.jpg', releaseYear: '2025', rating: 6.9, duration: 123 }
     ];
-
     return caudalesmaricon.slice(0, count);
 }
 
@@ -307,23 +203,10 @@ function getcaudalesmaricon(count = 11) {
  * @returns {Promise<Array>} - Array of movie objects
  */
 async function getMoviesForGame(topic = 'popular', count = 15) {
-    // Handle special topics
-    if (topic === 'classics') {
-        return fetchMoviesByYearRange(1930, 1980, count);
-    } else if (topic === 'modern') {
-        return fetchMoviesByYearRange(2010, new Date().getFullYear(), count);
-    } else if (topic === '90s') {
-        return fetchMoviesByYearRange(1990, 1999, count);
-    } else if (topic === '80s') {
-        return fetchMoviesByYearRange(1980, 1989, count);
-    }else if (topic === 'GRANOTISMO') {
+     if (topic === 'GRANOTISMO') {
         return getFallbackMovies(65);
-    }
-    else if (topic === 'caudalesmaricon') {
+    }else if (topic === 'caudalesmaricon') {
         return getcaudalesmaricon(60);
-    }else if (topic.startsWith('search:')) {
-        const query = topic.replace('search:', '').trim();
-        return searchMovies(query, count);
     } else {
         // Standard topic
         return fetchMoviesByTopic(topic, count);
@@ -332,7 +215,5 @@ async function getMoviesForGame(topic = 'popular', count = 15) {
 
 module.exports = {
     getMoviesForGame,
-    fetchMoviesByTopic,
-    fetchMoviesByYearRange,
-    searchMovies
+    fetchMoviesByTopic
 };
