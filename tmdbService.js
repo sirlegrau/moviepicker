@@ -281,6 +281,25 @@ function getFallbackMovies(count = 65) {
     return fallbackMovies.slice(0, count);
 }
 
+function getcaudalesmaricon(count = 11) {
+    const caudalesmaricon =[
+        { id: 'm1', title: 'The Electric State', imageUrl: 'https://image.tmdb.org/t/p/w1280/1TZ9Er1xEAKizzKKqYVgJIhNkN2.jpg', releaseYear: '2025', rating: 6.6, duration: 125 },
+        { id: 'm2', title: 'Sisu', imageUrl: 'https://image.tmdb.org/t/p/w1280/ygO9lowFMXWymATCrhoQXd6gCEh.jpg', releaseYear: '2022', rating: 7.4, duration: 91 },
+        { id: 'm3', title: 'King Kong', imageUrl: 'https://image.tmdb.org/t/p/w1280/paYKhEwUaxKA05vmOfU7FlleTln.jpg', releaseYear: '1976', rating: 6.2, duration: 134 },
+        { id: 'm4', title: 'Frida', imageUrl: 'https://image.tmdb.org/t/p/w1280/a4hgR6aKoohB6MHni171jbi9BkU.jpg', releaseYear: '2002', rating: 7.4, duration: 123 },
+        { id: 'm5', title: 'The Intern', imageUrl: 'https://image.tmdb.org/t/p/w1280/9UoAC9tu8kIyRy8AcJnGhnH0gOH.jpg', releaseYear: '2015', rating: 7.2, duration: 121 },
+        { id: 'm6', title: 'Interstellar', imageUrl: 'https://image.tmdb.org/t/p/w1280/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg', releaseYear: '2014', rating: 8.5, duration: 169 },
+        { id: 'm7', title: 'The Black Phone', imageUrl: 'https://image.tmdb.org/t/p/w1280/p9ZUzCyy9wRTDuuQexkQ78R2BgF.jpg', releaseYear: '2022', rating: 7.6, duration: 103 },
+        { id: 'm8', title: 'King Richard', imageUrl: 'https://image.tmdb.org/t/p/w1280/2dfujXrxePtYJPiPHj1HkAFQvpu.jpg', releaseYear: '2021', rating: 7.6, duration: 144 },
+        { id: 'm9', title: 'Whiplash', imageUrl: 'https://image.tmdb.org/t/p/w1280/7fn624j5lj3xTme2SgiLCeuedmO.jpg', releaseYear: '2014', rating: 8.4, duration: 107 },
+        { id: 'm10', title: 'The Core', imageUrl: 'https://image.tmdb.org/t/p/w1280/iMPR3OFhKNVvJw4eZoRhf9RzfHJ.jpg', releaseYear: '2003', rating: 5.8, duration: 136 },
+        { id: 'm11', title: 'The Life List', imageUrl: 'https://image.tmdb.org/t/p/w1280/5fg98cVo7da7OIK45csdLSd4NaU.jpg', releaseYear: '2025', rating: 6.9, duration: 123 }
+    ];
+
+    return caudalesmaricon.slice(0, count);
+}
+
+
 /**
  * Main function to get movies for the game
  * @param {string} topic - The movie topic/category
@@ -298,8 +317,11 @@ async function getMoviesForGame(topic = 'popular', count = 15) {
     } else if (topic === '80s') {
         return fetchMoviesByYearRange(1980, 1989, count);
     }else if (topic === 'GRANOTISMO') {
-        return getFallbackMovies(60);
-    } else if (topic.startsWith('search:')) {
+        return getFallbackMovies(65);
+    }
+    else if (topic === 'caudalesmaricon') {
+        return getcaudalesmaricon(60);
+    }else if (topic.startsWith('search:')) {
         const query = topic.replace('search:', '').trim();
         return searchMovies(query, count);
     } else {
