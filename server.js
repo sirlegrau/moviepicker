@@ -43,9 +43,8 @@ io.on('connection', (socket) => {
 
             // Fetch movies based on the selected topic
             const movieFetch = await getMoviesForGame(topic, 25);
-            console.log(movieFetch)
-            const movies = getRandomMovies(movieFetch, 8);
-            console.log(movies)
+            const movies = getRandomMovies(movieFetch, 9);
+
 
             // Create lobby
             lobbies[lobbyId] = {
