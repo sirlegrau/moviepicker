@@ -4,6 +4,7 @@ const { Server } = require('socket.io');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const { getMoviesForGame } = require('./tmdbService');
+const { getCustomMovies } = require('./tmdbServiceSearch'); // Adjust path as needed
 
 // Create Express app and HTTP server
 const app = express();
@@ -35,16 +36,25 @@ io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
     // Create a new lobby
-    socket.on('lobby:create', async ({ playerName, topic = 'popular' }, callback) => {
+    socket.on('lobby:create', async ({ playerName, topic = 'popular', customMovies = null }, callback) => {
         try {
             // Generate unique lobby ID
             const lobbyId = generateLobbyCode();
             const playerId = socket.id;
 
-            // Fetch movies based on the selected topic
-            const movieFetch = await getMoviesForGame(topic, 25);
-            const movies = getRandomMovies(movieFetch, 9);
+            // Variable to store the movies
+            let movies;
 
+            // Check if we're using custom movies or fetching by topic
+            if (topic === 'custom' && Array.isArray(customMovies) && customMovies.length >= 5) {
+                // Use our custom function to get movie data from TMDB
+                const movieFetch = await getCustomMovies(customMovies, customMovies.length);
+                movies = (getRandomMovies(movieFetch, customMovies.length));
+            } else {
+                // Use the existing path for predefined topics
+                const movieFetch = await getMoviesForGame(topic, 25);
+                movies = getRandomMovies(movieFetch, 9);
+            }
 
             // Create lobby
             lobbies[lobbyId] = {
@@ -87,7 +97,6 @@ io.on('connection', (socket) => {
             callback({ success: false, error: 'Failed to create lobby' });
         }
     });
-
     // Join an existing lobby
     socket.on('lobby:join', ({ lobbyId, playerName }, callback) => {
         try {

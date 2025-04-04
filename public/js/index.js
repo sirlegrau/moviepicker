@@ -42,8 +42,14 @@ const createLobbyBtn = document.getElementById('create-lobby');
 const lobbyIdInput = document.getElementById('lobby-id');
 const joinLobbyBtn = document.getElementById('join-lobby');
 const topicSelect = document.getElementById('movie-topic');
+const customMoviesContainer = document.getElementById('custom-movies-container');
 
-// Create a new lobby
+// Toggle custom movies textarea visibility
+topicSelect.addEventListener('change', () => {
+    customMoviesContainer.classList.toggle('hidden', topicSelect.value !== 'custom');
+});
+
+// Modify the create lobby click handler to avoid duplication
 createLobbyBtn.addEventListener('click', () => {
     const playerName = playerNameInput.value.trim();
     if (!playerName) {
@@ -53,11 +59,42 @@ createLobbyBtn.addEventListener('click', () => {
 
     state.playerName = playerName;
     state.topic = topicSelect ? topicSelect.value : 'popular';
-    socket.emit('lobby:create', { playerName, topic: state.topic }, (response) => {
+
+    // Prepare the lobby creation data
+    const lobbyData = {
+        playerName,
+        topic: state.topic
+    };
+
+    // Handle custom movies if that topic is selected
+    if (state.topic === 'custom') {
+        const customMoviesText = document.getElementById('custom-movies').value.trim();
+        if (!customMoviesText) {
+            alert('Please enter movie titles');
+            return;
+        }
+
+        // Parse the custom movies
+        const customMovies = customMoviesText.split('\n')
+            .map(title => title.trim())
+            .filter(title => title.length > 0);
+
+        // Validate minimum number of movies
+        if (customMovies.length < 5) {
+            alert('Please enter at least 5 movie titles');
+            return;
+        }
+
+        // Add custom movies to the data payload
+        lobbyData.customMovies = customMovies;
+    }
+
+    // Send create lobby request with all necessary data
+    socket.emit('lobby:create', lobbyData, (response) => {
         if (response.success) {
             state.lobbyId = response.lobbyId;
             state.playerId = response.playerId;
-            state.hostId = response.playerId; // Track that this player is the host
+            state.hostId = response.playerId;
 
             showGameScreen();
             updateLobbyInfo();
@@ -66,7 +103,6 @@ createLobbyBtn.addEventListener('click', () => {
         }
     });
 });
-
 // Join an existing lobby
 joinLobbyBtn.addEventListener('click', () => {
     const playerName = playerNameInput.value.trim();
