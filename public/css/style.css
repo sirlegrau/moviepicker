@@ -496,3 +496,36 @@ body {
         margin: 0 auto;
     }
 }
+
+/* Add this to your css/style.css file */
+
+/* Styles for the line-numbered textarea container */
+.line-numbers-container {
+    position: relative;
+    width: 100%;
+}
+
+.line-numbers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 28px;
+    height: 100%;
+    padding: 8px 8px 8px 0;
+    text-align: right;
+    background-color: #f7f7f7;
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #e2e8f0;
+    border-right: none;
+    color: #a0aec0;
+    font-size: 14px;
+    line-height: 1.5;
+    pointer-events: none;
+    user-select: none;
+    overflow: hidden;
+}
+
+.numbered-textarea {
+    width: 100%;
+    padding-left: 35px !important;
+}

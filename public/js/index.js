@@ -48,6 +48,52 @@ const customMoviesContainer = document.getElementById('custom-movies-container')
 topicSelect.addEventListener('change', () => {
     customMoviesContainer.classList.toggle('hidden', topicSelect.value !== 'custom');
 });
+document.addEventListener('DOMContentLoaded', function() {
+    setupLineNumbers();
+    setupMovieTopicToggle();
+});
+
+// Set up line numbers for textarea
+function setupLineNumbers() {
+    const textarea = document.getElementById('custom-movies');
+    const lineNumbers = document.getElementById('line-numbers');
+
+    if (!textarea || !lineNumbers) return;
+
+    // Initialize with line numbers
+    updateLineNumbers();
+
+    // Update line numbers when text changes
+    textarea.addEventListener('input', updateLineNumbers);
+    textarea.addEventListener('keyup', updateLineNumbers);
+    textarea.addEventListener('scroll', function() {
+        lineNumbers.scrollTop = textarea.scrollTop;
+    });
+
+    function updateLineNumbers() {
+        const lines = textarea.value.split('\n').length;
+        let content = '';
+        for (let i = 1; i <= Math.max(lines, textarea.rows); i++) {
+            content += i + '<br>';
+        }
+        lineNumbers.innerHTML = content;
+    }
+}
+
+// Toggle custom movies container based on selection
+function setupMovieTopicToggle() {
+    const movieTopic = document.getElementById('movie-topic');
+    const customMoviesContainer = document.getElementById('custom-movies-container');
+
+    if (!movieTopic || !customMoviesContainer) return;
+
+    function toggleCustomMovies() {
+        customMoviesContainer.style.display = movieTopic.value === 'custom' ? 'block' : 'none';
+    }
+
+    toggleCustomMovies();
+    movieTopic.addEventListener('change', toggleCustomMovies);
+}
 
 // Modify the create lobby click handler to avoid duplication
 createLobbyBtn.addEventListener('click', () => {

@@ -36,26 +36,24 @@
             <div class="mb-4">
                 <label for="movie-topic" class="block text-sm font-medium text-gray-700 mb-1">🍿Select a Topic🍿</label>
                 <select id="movie-topic" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-
+                    <option value="custom">🎞️ Custom Movies 🎞️</option>
                     <option value="popular">Popular Movies</option>
                     <option value="caudalesmaricon">🥸caudales maricon🥸</option>
                     <option value="topRated">Top Rated</option>
-                    <option value="nowPlaying">Now Playing</option>
-                    <option value="upcoming">Upcoming</option>
                     <option value="animation">Animation</option>
-                    <option value="action">Action</option>
                     <option value="comedy">Comedy</option>
                     <option value="horror">Horror</option>
                     <option value="sciFi">Sci-Fi</option>
                     <option value="romance">Romance</option>
-                    <option value="documentary">Documentary</option>
                     <option value="GRANOTISMO">🐸GRANOSTISMO🐸</option>
-                    <option value="custom">🎞️ Custom Movies 🎞️</option>
                 </select>
             </div>
-            <div id="custom-movies-container" class="mb-4 hidden">
+            <div id="custom-movies-container" class="mb-4">
                 <label for="custom-movies" class="block text-sm font-medium text-gray-700 mb-1">Enter Movie Titles (one per line)</label>
-                <textarea id="custom-movies" rows="5" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Pulp Fiction&#10;Avatar&#10;The Green Mile"></textarea>
+                <div class="line-numbers-container">
+                    <div id="line-numbers" class="line-numbers"></div>
+                    <textarea id="custom-movies" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md numbered-textarea" placeholder="Pulp Fiction"></textarea>
+                </div>
                 <p class="text-xs text-gray-500 mt-1">Enter at least 5 movie titles, one per line</p>
             </div>
             <div class="space-y-4">
