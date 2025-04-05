@@ -71,12 +71,24 @@ function setupLineNumbers() {
     });
 
     function updateLineNumbers() {
+        const textarea = document.getElementById('custom-movies');
+        const lineNumbers = document.getElementById('line-numbers');
+
+        if (!textarea || !lineNumbers) return;
+
+        // Get the number of lines
         const lines = textarea.value.split('\n').length;
         let content = '';
+
+        // Generate the line numbers
         for (let i = 1; i <= Math.max(lines, textarea.rows); i++) {
-            content += i + '<br>';
+            content += `<div style="height: 1.5em;">${i}</div>`;
         }
+
         lineNumbers.innerHTML = content;
+
+        // Sync the scrolling
+        lineNumbers.scrollTop = textarea.scrollTop;
     }
 }
 
