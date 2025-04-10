@@ -162,7 +162,6 @@ function getFallbackMovies(count = 65) {
         { id: 'm52', title: 'Wizards', imageUrl: 'https://image.tmdb.org/t/p/w1280/jyQsIPlub6ckhl3G81bqNDO7DD1.jpg', releaseYear: '1977', rating: 6.2, duration: 80 },
         { id: 'm53', title: 'The Beasts', imageUrl: 'https://image.tmdb.org/t/p/w1280/ytWMRYLlusyzMFFjyuFRY1liteR.jpg', releaseYear: '2022', rating: 7.5, duration: 138 },
         { id: 'm54', title: 'The Good Boss', imageUrl: 'https://image.tmdb.org/t/p/w1280/x1OgeRKB8AoOYKt3DzxJelLLpLA.jpg', releaseYear: '2021', rating: 7, duration: 120 },
-        { id: 'm55', title: 'Soul', imageUrl: 'https://image.tmdb.org/t/p/w1280/hm58Jw4Lw8OIeECIq5qyPYhAeRJ.jpg', releaseYear: '2020', rating: 8.1, duration: 101 },
         { id: 'm56', title: 'District 9', imageUrl: 'https://image.tmdb.org/t/p/w1280/kYkK0KIBygtYQzBpjMgQyya4Re7.jpg', releaseYear: '2009', rating: 7.4, duration: 112 },
         { id: 'm57', title: 'Buena Vista Social Club', imageUrl: 'https://image.tmdb.org/t/p/w1280/b203Z3qwCRMLOY00XZh4qNQCwM4.jpg', releaseYear: '1999', rating: 7.5, duration: 105 },
         { id: 'm58', title: 'The Prince of Egypt', imageUrl: 'https://image.tmdb.org/t/p/w1280/2xUjYwL6Ol7TLJPPKs7sYW5PWLX.jpg', releaseYear: '1998', rating: 7.3, duration: 99 },
